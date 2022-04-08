@@ -63,5 +63,7 @@ if __name__ == '__main__':
     solve(A, c)
 
     print(A)
+    print('------------------------')
     print(b)
+    print('------------------------')
     print(c)
