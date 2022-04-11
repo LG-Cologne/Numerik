@@ -1,32 +1,32 @@
+#!/usr/bin/env python3
 import numpy as np
-
-
-def addRowFakTimes(A, row1, row2, fak):  # Matrix
-    A[row1] = [a + fak * b for a, b in zip(A[row1], A[row2])]
 
 
 def zerlegung(a):
     lu = np.array(a, copy=True, dtype=np.float32)
-    p = np.arange(len(lu))
+    n = len(lu)
+    p = np.arange(n)
 
-    for iter in range(len(lu)):
-        if (lu[iter, iter] == 0):
-            for row in range(iter + 1, len(lu)):
-                if lu[row, iter] != 0:
-                    p[iter] = row
-                    lu[[iter, row]] = lu[[row, iter]]
+    for j in range(n - 1):
+        if lu[j, j] == 0:
+            for i in range(j + 1, n):
+                if lu[i, j] != 0:
+                    p[j] = i
+                    lu[[j, i]] = lu[[i, j]]
                     break
-
-        for row in range(iter + 1, len(lu)):  # Werte unter Pivot
-            cur = lu[row, iter]
-            pivot = lu[iter, iter]
-            if cur != 0:
-                fak = -(cur / pivot)
-                lu[row, iter] = fak  # lowerMatrix
-                # addRowFakTimes(a, row, iter, fak)   #upperMatrix
-                lu[row] = [x + fak * y for x, y in zip(a[row, iter:], a[iter, iter:])]
+        for i in range(j + 1, n):
+            lu[i, j] /= lu[j, j]
+            for i2 in range(j + 1, n):
+                lu[i, i2] -= lu[i, j] * lu[j, i2]
 
     return lu, p
+
+
+def find_first_and_swap(lu, n, p, j):
+    for i2 in range(j + 1, n):
+        if lu[i2, j] != 0:
+            p[j] = i2
+            lu[j], lu[i2] = lu[i2], lu[j]
 
 
 def permutation(p, b):
@@ -54,6 +54,7 @@ def rueckwaerts(u, y):
         x[i] /= u[i, i]
     return x
 
+
 def solve(a, bs):
     xs = []
     lu, p = zerlegung(a)
@@ -62,6 +63,7 @@ def solve(a, bs):
         y = vorwaerts(lu, pb)
         xs.append(rueckwaerts(lu, y))
     return xs
+
 
 if __name__ == '__main__':
     a = np.array([[0, 0, 0, 1], [2, 1, 2, 0], [4, 4, 0, 0], [2, 3, 1, 0]])
