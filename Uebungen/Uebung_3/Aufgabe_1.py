@@ -14,19 +14,21 @@ def zerlegung(a):
                 if a[row][iter] != 0:
                     a[[iter, row]] = a[[row, iter]]
                     break
+        else:
+            row = iter + 1
+            while row < len(a):  # Werte unter Pivot
+                cur = a[row, iter]
+                pivot = a[iter][iter]
 
-    for iter in range(len(a)):
-        row = iter + 1
-        while row < len(a):  # Werte unter Pivot
-            cur = a[row, iter]
-            pivot = a[iter][iter]
+                if cur != 0:
+                    fak = -(cur / pivot)
+                    # addRowFakTimes(a, row, iter, fak)   #upperMatrix
+                    x, y = iter, iter
+                    a[row] = [x + fak * y for x, y in zip(a[row], a[row])]
 
-            if cur != 0:
-                fak = -(cur / pivot)
-                addRowFakTimes(a, row, iter, fak)
-                a[row][iter] = fak
+                    a[row][iter] = fak  # lowerMatrix
 
-            row += 1
+                row += 1
     return a
 
 
@@ -56,5 +58,5 @@ if __name__ == '__main__':
                      [0, 0, 1, 1],
                      [0, 0, 0, 1]])
 
-    LU = zerlegung(test)
+    LU = zerlegung(a)
     print(LU)
