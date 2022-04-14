@@ -1,10 +1,5 @@
 import numpy as np
 
-
-def addRowFakTimes(A, row1, row2, fak):  # Matrix
-    A[row1] = [a + fak * b for a, b in zip(A[row1], A[row2])]
-
-
 def zerlegung(a):
     lu = np.array(a, copy=True, dtype=np.float32)
     p = np.arange(len(lu))
