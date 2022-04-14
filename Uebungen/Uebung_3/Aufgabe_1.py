@@ -21,10 +21,12 @@ def zerlegung(a):
             cur = lu[row, iter]
             pivot = lu[iter, iter]
             if cur != 0:
-                fak = -(cur / pivot)
+                fak = (cur / pivot)
+
+                for col in range(iter + 1, len(lu)):
+                    lu[row, col] = lu[row, col] + (-fak) * lu[iter, col] #UpperMatrix
+
                 lu[row, iter] = fak  # lowerMatrix
-                # addRowFakTimes(a, row, iter, fak)   #upperMatrix
-                lu[row] = [x + fak * y for x, y in zip(a[row, iter:], a[iter, iter:])]
 
     return lu, p
 
@@ -54,6 +56,7 @@ def rueckwaerts(u, y):
         x[i] /= u[i, i]
     return x
 
+
 def solve(a, bs):
     xs = []
     lu, p = zerlegung(a)
@@ -63,7 +66,9 @@ def solve(a, bs):
         xs.append(rueckwaerts(lu, y))
     return xs
 
+
 if __name__ == '__main__':
+
     a = np.array([[0, 0, 0, 1], [2, 1, 2, 0], [4, 4, 0, 0], [2, 3, 1, 0]])
     print('A =')
     print(a)
@@ -71,7 +76,9 @@ if __name__ == '__main__':
         np.array([3, 5, 4, 5]),
         np.array([4, 10, 12, 11])
     ]
+
     xs = solve(a, bs)
+
     for b, x in zip(bs, xs):
         print('Lösung für b =', b)
         print('x =', x)

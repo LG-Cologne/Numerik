@@ -15,7 +15,7 @@ def zerlegung(a):
                     lu[[j, i]] = lu[[i, j]]
                     break
         for i in range(j + 1, n):
-            lu[i, j] /= lu[j, j]
+            lu[i, j] /= lu[j, j]    #fak (+einsetzen)
             for i2 in range(j + 1, n):
                 lu[i, i2] -= lu[i, j] * lu[j, i2]
 
@@ -58,6 +58,9 @@ def rueckwaerts(u, y):
 def solve(a, bs):
     xs = []
     lu, p = zerlegung(a)
+    print('//////////////////////////////////////////')
+    print(lu)
+    print('//////////////////////////////////////////')
     for b in bs:
         pb = permutation(p, b)
         y = vorwaerts(lu, pb)
